@@ -1,13 +1,21 @@
+# fly.toml app configuration file generated for blasius-vauto-ftp-server on 2024-07-16T20:08:38-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'blasius-vauto-ftp-server'
+primary_region = 'bos'
+
 [experimental]
-  cmd = ["sftpgo", "serve"]
+  cmd = ['sftpgo', 'serve']
 
 [build]
-  image = "drakkan/sftpgo:latest"
+  image = 'drakkan/sftpgo:latest'
 
 [env]
-  SFTPGO_SFTPD__BINDINGS__0__PORT = "2222"
-  SFTPGO_TELEMETRY__BIND_ADDRESS = "0.0.0.0"
-  SFTPGO_TELEMETRY__BIND_PORT = "9000"
+  SFTPGO_SFTPD__BINDINGS__0__PORT = '2222'
+  SFTPGO_TELEMETRY__BIND_ADDRESS = '0.0.0.0'
+  SFTPGO_TELEMETRY__BIND_PORT = '9000'
 
 [http_service]
   internal_port = 8080
@@ -15,20 +23,21 @@
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
+
   [http_service.concurrency]
-    type = "requests"
+    type = 'requests'
     hard_limit = 250
     soft_limit = 200
 
 [[services]]
-  protocol = "tcp"
+  protocol = 'tcp'
   internal_port = 2121
 
   [[services.ports]]
     port = 21
 
 [[services]]
-  protocol = "tcp"
+  protocol = 'tcp'
   internal_port = 2222
 
   [[services.ports]]
@@ -37,13 +46,16 @@
 [checks]
   [checks.healthz]
     port = 9000
-    type = "http"
-    interval = "5s"
-    timeout = "10s"
-    grace_period = "30s"
-    method = "get"
-    path = "/healthz"
+    type = 'http'
+    interval = '5s'
+    timeout = '10s'
+    grace_period = '30s'
+    method = 'get'
+    path = '/healthz'
 
-[metrics]
+[[vm]]
+  size = 'shared-cpu-1x'
+
+[[metrics]]
   port = 9000
-  path = "/metrics"
+  path = '/metrics'
